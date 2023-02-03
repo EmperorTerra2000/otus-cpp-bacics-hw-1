@@ -1,8 +1,25 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(02_hello_world CXX)
+project(03.homework)
 
-add_subdirectory(hello)
-add_subdirectory(hello2)
+add_executable(main 
+    main.cpp
+    main.h
+    guessTheNumber.h
+    guessTheNumber.cpp
+)
 
-add_subdirectory(homework)
+set_target_properties(main PROPERTIES
+  CXX_STANDARD 17
+  CXX_STANDARD_REQUIRED ON)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR
+  CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+
+    target_compile_options(main PRIVATE -Wall -Wextra -Werror -pedantic)
+
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+
+    target_compile_options(main PRIVATE /EHsc /W4 /WX)
+
+endif()
