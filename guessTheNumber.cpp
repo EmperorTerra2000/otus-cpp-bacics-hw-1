@@ -38,7 +38,7 @@ void GuessTheNumber::generateRandomValue()
 void GuessTheNumber::setUserName()
 {
   std::cout << "Hi! Enter your name, please:" << std::endl;
-  std::cin >> user_name;
+  getline(std::cin, user_name);
 }
 
 void GuessTheNumber::setCurrentValue()
@@ -111,10 +111,26 @@ void GuessTheNumber::readingFromFile(std::vector<std::string> &vUserName, std::v
 
   std::string username;
   int high_score = 0;
+  char c;
   while (true)
   {
     // Read the username first
     in_file >> username;
+    in_file.get(c);
+    in_file.get(c);
+
+    if (!std::isdigit(c))
+    {
+      std::string username2;
+      in_file.seekg(-1, std::ios::cur);
+      in_file >> username2;
+      username.append(" ");
+      username.append(username2);
+    }
+    else
+    {
+      in_file.seekg(-2, std::ios::cur);
+    }
     // Read the high score next
     in_file >> high_score;
     // Ignore the end of line symbol

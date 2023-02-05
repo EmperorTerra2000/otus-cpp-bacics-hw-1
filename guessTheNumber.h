@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
+#include <algorithm>
 
 class GuessTheNumber
 {
