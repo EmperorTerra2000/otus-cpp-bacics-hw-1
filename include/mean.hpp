@@ -2,20 +2,23 @@
 
 #include "istatistics.hpp"
 
-template <typename T>
 class Mean : public IStatistics
 {
 public:
-  Mean(std::vector<T> &values_) : sum{0}, quantity{values_.size()}
+  Mean() : sum{0}, quantity{0}
   {
   }
 
-  void update(T next) override
+  void update(double next) override
   {
+    static unsigned long long counter = 0;
+
+    quantity = ++counter;
+
     sum += next;
   }
 
-  T eval() const override
+  double eval() const override
   {
     return sum / quantity;
   }
@@ -26,6 +29,6 @@ public:
   }
 
 private:
-  T sum;
-  size_t quantity;
+  double sum;
+  unsigned long long quantity;
 };

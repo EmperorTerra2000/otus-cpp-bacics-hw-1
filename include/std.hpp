@@ -1,38 +1,51 @@
 #pragma once
 
+#include <cmath>
+#include <vector>
+
 #include "istatistics.hpp"
 #include "mean.hpp"
 
-template <typename T>
 class Std : public IStatistics
 {
 public:
-  Std(std::vector<T> &values_) : sum{0}, average{0}, quantity{values_.size()}
+  Std()
   {
-    IStatistics *mean = new Mean{values_};
+  }
 
-    for (auto iter = values_.cbegin();
-         iter != values_.cend();
+  ~Std()
+  {
+  }
+
+  void update(double next) override
+  {
+    sequenceValues.push_back(next);
+  }
+
+  double eval() const override
+  {
+    double sum = 0;
+    double average = 0;
+    double sumAverage = 0;
+    size_t length = sequenceValues.size();
+
+    for (auto iter = sequenceValues.cbegin();
+         iter != sequenceValues.cend();
          ++iter)
     {
-      mean->update(*iter);
+      sumAverage += *iter;
     }
 
-    average = mean->eval();
+    average = sumAverage / length;
 
-    delete mean;
-  }
+    for (auto iter = sequenceValues.cbegin();
+         iter != sequenceValues.cend();
+         ++iter)
+    {
+      sum += std::pow(*iter - average, 2);
+    }
 
-  void update(T next) override
-  {
-    T sub = next - average;
-    sum += std::pow(sub, 2);
-  }
-
-  T eval() const override
-  {
-    T val = sum / quantity;
-    return std::sqrt(val);
+    return std::sqrt(sum / length);
   }
 
   const char *name() const override
@@ -41,7 +54,5 @@ public:
   }
 
 private:
-  T average;
-  T sum;
-  size_t quantity;
+  std::vector<double> sequenceValues;
 };

@@ -2,23 +2,30 @@
 
 #include "istatistics.hpp"
 
-template <typename T>
 class Min : public IStatistics
 {
 public:
-  Min(std::vector<T> &values_) : m_min{values_[0]}
+  Min() : m_min{0}
   {
   }
 
-  void update(T next) override
+  void update(double next) override
   {
+    static bool isFirstTime = true;
+
+    if (isFirstTime)
+    {
+      m_min = next;
+      isFirstTime = false;
+    }
+
     if (next < m_min)
     {
       m_min = next;
     }
   }
 
-  T eval() const override
+  double eval() const override
   {
     return m_min;
   }
@@ -29,5 +36,5 @@ public:
   }
 
 private:
-  T m_min;
+  double m_min;
 };

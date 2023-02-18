@@ -2,23 +2,30 @@
 
 #include "istatistics.hpp"
 
-template <typename T>
 class Max : public IStatistics
 {
 public:
-  Max(std::vector<T> &values_) : m_max{values_[0]}
+  Max() : m_max{0}
   {
   }
 
-  void update(T next) override
+  void update(double next) override
   {
+    static bool isFirstTime = true;
+
+    if (isFirstTime)
+    {
+      m_max = next;
+      isFirstTime = false;
+    }
+
     if (next > m_max)
     {
       m_max = next;
     }
   }
 
-  T eval() const override
+  double eval() const override
   {
     return m_max;
   }
@@ -29,5 +36,5 @@ public:
   }
 
 private:
-  T m_max;
+  double m_max;
 };
