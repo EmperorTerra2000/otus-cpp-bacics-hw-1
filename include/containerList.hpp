@@ -27,6 +27,7 @@ public:
   void erase(int pos);
   size_t size();
   std::string getNameClass();
+  void checkOutDimension(int pos, size_t length);
 
   T operator[](int index);
 };

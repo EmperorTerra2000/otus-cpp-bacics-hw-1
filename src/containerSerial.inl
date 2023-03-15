@@ -10,6 +10,17 @@ ContainerSerial<T>::ContainerSerial()
 template <class T>
 void ContainerSerial<T>::erase(int pos)
 {
+  checkOutDimension(pos, m_size);
+
+  if (m_size == 1)
+  {
+    delete[] m_region;
+
+    m_size = 0;
+
+    return;
+  }
+
   // считаю не особо хорошим решением
   size_t pos_t = static_cast<size_t>(pos);
 
@@ -30,7 +41,9 @@ void ContainerSerial<T>::erase(int pos)
       new_region[i - 1] = m_region[i];
     }
   }
-  new_region[m_size - 2] = m_region[m_size - 1];
+
+  if (m_size != pos_t)
+    new_region[m_size - 2] = m_region[m_size - 1];
 
   delete[] m_region;
   m_region = new_region;
@@ -62,6 +75,7 @@ void ContainerSerial<T>::push_back(const T &value)
 template <class T>
 void ContainerSerial<T>::insert(int pos, const T &value)
 {
+  checkOutDimension(pos, m_size + 1);
   // считаю не особо хорошим решением
   size_t pos_t = static_cast<size_t>(pos);
 
@@ -118,4 +132,21 @@ template <class T>
 std::string ContainerSerial<T>::getNameClass()
 {
   return "serial";
+}
+
+template <class T>
+void ContainerSerial<T>::checkOutDimension(int pos, size_t length)
+{
+  size_t pos_t = static_cast<size_t>(pos);
+
+  if ((pos_t > length) || (pos_t < 1))
+  {
+    std::cerr << "error: Going beyond the dimension of the container "
+              << getNameClass()
+              << " : size = "
+              << m_size
+              << " pos = "
+              << pos;
+    exit(-1);
+  }
 }

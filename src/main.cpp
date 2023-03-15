@@ -2,6 +2,8 @@
 #include "containerList.hpp"
 #include "containerSerial.hpp"
 
+const size_t SIZE_CONTAINER = 10;
+
 template <class T>
 void show(T container)
 {
@@ -19,27 +21,11 @@ int main()
   ContainerList<int> list{};
   ContainerSerial<int> serial{};
 
-  list.push_back(0);
-  list.push_back(1);
-  list.push_back(2);
-  list.push_back(3);
-  list.push_back(4);
-  list.push_back(5);
-  list.push_back(6);
-  list.push_back(7);
-  list.push_back(8);
-  list.push_back(9);
-
-  serial.push_back(0);
-  serial.push_back(1);
-  serial.push_back(2);
-  serial.push_back(3);
-  serial.push_back(4);
-  serial.push_back(5);
-  serial.push_back(6);
-  serial.push_back(7);
-  serial.push_back(8);
-  serial.push_back(9);
+  for (size_t i = 0; i < SIZE_CONTAINER; ++i)
+  {
+    list.push_back(i);
+    serial.push_back(i);
+  }
 
   std::cout << "=======CONTAINERS======="
             << std::endl;
@@ -56,7 +42,7 @@ int main()
             << std::endl;
   std::cout << serial.getNameClass()
             << " => "
-            << list.size()
+            << serial.size()
             << std::endl;
 
   std::cout << "=======ERASE======="
@@ -68,7 +54,7 @@ int main()
 
   serial.erase(3);
   serial.erase(5);
-  serial.erase(9);
+  serial.erase(7);
 
   show(list);
   show(serial);

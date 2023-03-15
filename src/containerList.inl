@@ -10,7 +10,18 @@ ContainerList<T>::ContainerList()
 template <class T>
 void ContainerList<T>::erase(int pos)
 {
+  checkOutDimension(pos, m_size);
+
   Node<T> *current = m_last;
+
+  if (m_size == 1)
+  {
+    delete current;
+    m_size--;
+
+    return;
+  }
+
   // считаю не особо хорошим решением
   size_t pos_t = static_cast<size_t>(pos);
 
@@ -19,8 +30,20 @@ void ContainerList<T>::erase(int pos)
     current = current->prev;
   }
 
-  current->next->prev = current->prev;
-  current->prev->next = current->next;
+  if (pos_t == 1)
+  {
+    current->next->prev = nullptr;
+  }
+  else if (pos_t == size())
+  {
+    current->prev->next = nullptr;
+    m_last = current->prev;
+  }
+  else
+  {
+    current->next->prev = current->prev;
+    current->prev->next = current->next;
+  }
 
   delete current;
 
@@ -66,6 +89,8 @@ T ContainerList<T>::operator[](int index)
 template <class T>
 void ContainerList<T>::insert(int pos, const T &value)
 {
+  checkOutDimension(pos, m_size + 1);
+
   Node<T> *current = m_last;
   Node<T> *newElement = new Node<T>{};
   size_t pos_t = static_cast<size_t>(pos);
@@ -99,4 +124,21 @@ template <class T>
 std::string ContainerList<T>::getNameClass()
 {
   return "list";
+}
+
+template <class T>
+void ContainerList<T>::checkOutDimension(int pos, size_t length)
+{
+  size_t pos_t = static_cast<size_t>(pos);
+
+  if ((pos_t > length) || (pos_t < 1))
+  {
+    std::cerr << "error: Going beyond the dimension of the container "
+              << getNameClass()
+              << " : size = "
+              << m_size
+              << " pos = "
+              << pos;
+    exit(-1);
+  }
 }
