@@ -25,4 +25,6 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     )
 endif()
 
+add_subdirectory(gtests)
+
 target_compile_features(containers PUBLIC cxx_std_17)
