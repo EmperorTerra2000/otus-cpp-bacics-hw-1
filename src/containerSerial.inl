@@ -1,10 +1,11 @@
-#include "containerSerial.hpp"
-
 template <class T>
 ContainerSerial<T>::ContainerSerial()
 {
   m_size = 0;
   m_region = nullptr;
+
+  if (m_size != 0)
+    throw std::exception();
 }
 
 template <class T>

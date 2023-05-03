@@ -1,10 +1,11 @@
-#include "containerList.hpp"
-
 template <class T>
 ContainerList<T>::ContainerList()
 {
   m_last = nullptr;
   m_size = 0;
+
+  if (m_size != 0)
+    throw std::exception();
 }
 
 template <class T>
